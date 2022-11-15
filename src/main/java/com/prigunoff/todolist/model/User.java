@@ -33,7 +33,7 @@ public class User {
     @ManyToOne
     @JoinColumn(name = "role_id")
     private Role role;
-    @OneToMany(mappedBy = "owner",cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "owner", cascade = CascadeType.REMOVE)
     private List<ToDo> myTodos;
     @ManyToMany
     @JoinTable(name = "todo_collaborator",
