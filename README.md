@@ -1,7 +1,7 @@
 # TodoServiceRestApi
 This pet is just to secure my knowlage from cources.
 ToDo Web App to set todo's lists and tasks for users. Users can be registered and has their own roles.
-Build with Spring Security, Jwt Token and DB. Builed with Rest and also simple controllers to contact with browser.(For you just to see what's going on, better to use Postman or related ofc)
+Build with Spring Security, Jwt Token and DB. 
 
 To run:
 1.Open the project in IntelliJIDEA Ultimate Edition.
