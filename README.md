@@ -4,6 +4,6 @@ ToDo App to set todo's lists and tasks for users, also create users. Users can b
 Build with Spring Security, Jwt Token and DB. 
 
 To run:
-1.Open the project in IntelliJIDEA Ultimate Edition.
+1.Open the project in IntelliJIDEA Ultimate Edition./n
 2.Install  postgresSQL.
 3.Set up app.properties: spring.datasource.url=jdbc:postgresql://localhost:(yourPort)/(yourDbName)
