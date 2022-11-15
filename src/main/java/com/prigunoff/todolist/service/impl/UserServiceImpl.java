@@ -21,7 +21,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User create(User user) {
-        if(user != null){
+        if (user != null) {
             userRepository.save(user);
         }
         throw new NullEntityReferenceException("User cannot be 'null'");
@@ -56,6 +56,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public Optional<User> findByEmail(String email) {
         return Optional.ofNullable(userRepository.findByEmail(email)
-                .orElseThrow(() -> new NullEntityReferenceException("User with email " + email + " not found")));
+                .orElseThrow(() -> new EntityNotFoundException("User with email " + email + " not found")));
     }
 }
