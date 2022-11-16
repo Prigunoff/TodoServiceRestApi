@@ -4,17 +4,20 @@ import com.prigunoff.todolist.exceptions.NullEntityReferenceException;
 import com.prigunoff.todolist.model.ToDo;
 import com.prigunoff.todolist.repository.ToDoRepository;
 import com.prigunoff.todolist.service.ToDoService;
+import com.prigunoff.todolist.service.UserService;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class ToDoServiceImpl implements ToDoService {
     private ToDoRepository todoRepository;
-
-    public ToDoServiceImpl(ToDoRepository todoRepository) {
+    private UserService userService;
+    public ToDoServiceImpl(ToDoRepository todoRepository,UserService userService) {
         this.todoRepository = todoRepository;
+        this.userService = userService;
     }
 
     @Override

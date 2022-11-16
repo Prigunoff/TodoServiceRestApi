@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -46,6 +47,7 @@ public class ToDoRestController {
     public ResponseEntity<ToDo> createToDoForUser(@PathVariable("id") Long userId, @RequestBody ToDo todo) {
         todo.setOwner(userService.readById(userId));
         todo.setCreatedAt(LocalDateTime.now());
+        todo.setCollaborators(new ArrayList<>());
         toDoService.create(todo);
 
         return new ResponseEntity<>(todo,HttpStatus.OK);
@@ -65,8 +67,11 @@ public class ToDoRestController {
         if (todo == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        todo.setCreatedAt(todo.getCreatedAt());
-        todo.setOwner(todo.getOwner());
+        if(todo.getCollaborators() == null){
+            todo.setCollaborators(new ArrayList<>());
+        }else{
+            todo.setCollaborators(todo.getCollaborators());
+        }
         toDoService.update(todo);
         return new ResponseEntity<>(todo, HttpStatus.OK);
     }

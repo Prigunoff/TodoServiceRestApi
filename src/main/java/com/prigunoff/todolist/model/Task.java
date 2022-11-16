@@ -1,9 +1,13 @@
 package com.prigunoff.todolist.model;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.prigunoff.todolist.dto.TaskSerializer;
+
 import javax.persistence.*;
 
 @Entity
 @Table(name="tasks")
+@JsonSerialize(using = TaskSerializer.class)
 public class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
