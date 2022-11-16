@@ -4,11 +4,12 @@ import com.prigunoff.todolist.exceptions.NullEntityReferenceException;
 import com.prigunoff.todolist.model.State;
 import com.prigunoff.todolist.repository.StateRepository;
 import com.prigunoff.todolist.service.StateService;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
+@Service
 public class StateServiceImpl implements StateService {
     private StateRepository stateRepository;
 

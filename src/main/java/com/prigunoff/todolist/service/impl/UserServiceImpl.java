@@ -23,6 +23,7 @@ public class UserServiceImpl implements UserService {
     public User create(User user) {
         if (user != null) {
             userRepository.save(user);
+            return user;
         }
         throw new NullEntityReferenceException("User cannot be 'null'");
     }
@@ -37,6 +38,12 @@ public class UserServiceImpl implements UserService {
     public User update(User user) {
         if (user != null) {
             readById(user.getId());
+
+            if (user.getPassword().isBlank()) {
+                user.setPassword(readById(user.getId()).getPassword());
+            }
+
+            user.setRole(readById(user.getId()).getRole());
             return userRepository.save(user);
         }
         throw new NullEntityReferenceException("User cannot be 'null'");

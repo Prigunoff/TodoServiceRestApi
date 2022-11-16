@@ -4,10 +4,11 @@ import com.prigunoff.todolist.exceptions.NullEntityReferenceException;
 import com.prigunoff.todolist.model.Task;
 import com.prigunoff.todolist.repository.TaskRepository;
 import com.prigunoff.todolist.service.TaskService;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-
+@Service
 public class TaskServiceImpl implements TaskService {
     private TaskRepository taskRepository;
 
