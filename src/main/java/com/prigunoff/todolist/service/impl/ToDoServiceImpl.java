@@ -19,6 +19,7 @@ public class ToDoServiceImpl implements ToDoService {
 
     @Override
     public ToDo create(ToDo todo) {
+
         return todoRepository.save(todo);
     }
 
@@ -30,7 +31,14 @@ public class ToDoServiceImpl implements ToDoService {
 
     @Override
     public ToDo update(ToDo todo) {
-        return todoRepository.save(todo);
+        if (todo != null) {
+            if (todo.getOwner() == null) {
+                todo.setOwner(readById(todo.getId()).getOwner());
+            }
+            todo.setCreatedAt(readById(todo.getId()).getCreatedAt());
+            return todoRepository.save(todo);
+        }
+        throw new NullEntityReferenceException("Todo cannot be 'null'");
     }
 
     @Override

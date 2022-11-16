@@ -43,11 +43,12 @@ public class UserRestController {
     @PutMapping("")
     public ResponseEntity<User> updateUser(@RequestBody User user) {
         userService.update(user);
-        return new ResponseEntity<>(user,HttpStatus.OK);
+        return new ResponseEntity<>(user, HttpStatus.OK);
     }
+
     @DeleteMapping("{id}")
-    public ResponseEntity<User> deleteUser(@PathVariable("id") Long userId){
-        if(userService.readById(userId) == null){
+    public ResponseEntity<User> deleteUser(@PathVariable("id") Long userId) {
+        if (userService.readById(userId) == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         userService.delete(userId);
@@ -55,8 +56,8 @@ public class UserRestController {
     }
 
     @GetMapping("")
-    public ResponseEntity<List<User>> getAllUsers(){
-        return new ResponseEntity<>(this.userService.getAll(),HttpStatus.OK);
+    public ResponseEntity<List<User>> getAllUsers() {
+        return new ResponseEntity<>(this.userService.getAll(), HttpStatus.OK);
     }
 
 }

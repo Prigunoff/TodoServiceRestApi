@@ -1,5 +1,8 @@
 package com.prigunoff.todolist.model;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.prigunoff.todolist.dto.ToDoSerializer;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
@@ -7,6 +10,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "todos")
+@JsonSerialize(using = ToDoSerializer.class)
 public class ToDo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
