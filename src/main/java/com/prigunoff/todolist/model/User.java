@@ -1,5 +1,7 @@
 package com.prigunoff.todolist.model;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.prigunoff.todolist.dto.UserSerializer;
 import org.springframework.stereotype.Controller;
 
 import javax.persistence.*;
@@ -9,7 +11,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "users")
-
+@JsonSerialize(using = UserSerializer.class)
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
