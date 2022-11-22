@@ -9,6 +9,7 @@ import com.prigunoff.todolist.service.ToDoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,33 +28,37 @@ public class TaskRestController {
         this.stateService = stateService;
         this.toDoService = toDoService;
     }
+
     @GetMapping("")
-    public ResponseEntity<List<Task>> getAll(){
+    public ResponseEntity<List<Task>> getAll() {
         return new ResponseEntity<>(this.taskService.getAll(), HttpStatus.OK);
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<Task> getOneTask(@PathVariable("id") Long taskId){
-        if (taskId == null){
+    public ResponseEntity<Task> getOneTask(@PathVariable("id") Long taskId) {
+        if (taskId == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(taskService.readById(taskId), HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN') or " +
+            "@userServiceImpl.readById(@toDoServiceImpl.readById(#todo_id).owner.id).id == principal.getId()")// WORKS
     @PostMapping("/todo/{todo_id}")
     @ResponseStatus(code = HttpStatus.CREATED)
-    public  ResponseEntity create(@PathVariable String todo_id, @RequestBody Map<String, String> task) {
+    public ResponseEntity create(@PathVariable String todo_id, @RequestBody Map<String, String> task) {
         try {
             TaskDto taskDto = new TaskDto(Long.parseLong(task.get("task_id")), task.get("task"), task.get("priority"), Long.parseLong(task.get("todo_id")), Long.parseLong(task.get("state_id")));
             Task task1 = TaskTransformer.convertToEntity(taskDto,
                     toDoService.readById(taskDto.getTodoId()),
                     stateService.getByName("New"));
-            return TaskTransformer.getTaskMap(taskService.create(task1),HttpStatus.CREATED);
-        }
-        catch (Exception e){
+            return TaskTransformer.getTaskMap(taskService.create(task1), HttpStatus.CREATED);
+        } catch (Exception e) {
             return ResponseEntity.notFound().build();
         }
     }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN') or @userServiceImpl.readById(@toDoServiceImpl.readById(@taskServiceImpl.readById(#id).id)) == principal.getId()")
     @PutMapping("{id}")
     public ResponseEntity<Task> update(@PathVariable String id, @RequestBody Map<String, String> editedMap) {
         try {
@@ -69,20 +74,20 @@ public class TaskRestController {
             oldTask.setPriority(task.getPriority());
             taskService.update(oldTask);
 
-            return TaskTransformer.getTaskMap(oldTask,HttpStatus.OK);
-        }
-        catch (Exception e)
-        {
+            return TaskTransformer.getTaskMap(oldTask, HttpStatus.OK);
+        } catch (Exception e) {
             return ResponseEntity.notFound().build();
         }
     }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN') or @taskServiceImpl.readById(#id).todo.owner.id == principal.getId()")
 
     @DeleteMapping("{id}")
     public ResponseEntity<Task> delete(@PathVariable String id) {
 
         try {
             taskService.delete(Integer.parseInt(id));
-            return new ResponseEntity(HttpStatus.OK);
+            return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
             return ResponseEntity.notFound().build();
         }
