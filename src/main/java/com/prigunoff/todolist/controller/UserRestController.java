@@ -29,7 +29,7 @@ public class UserRestController {
         this.passwordEncoder = passwordEncoder;
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or @userServiceImpl.readById(#userId).id == principal.getId()")
     @GetMapping("{id}")
     public ResponseEntity<User> readUserById(@PathVariable("id") Long userId) {
         if (userId == null) {
@@ -43,7 +43,7 @@ public class UserRestController {
     @PostMapping("")
     public ResponseEntity<User> createUser(@RequestBody User user) {
         if (user == null) {
-            log.error("UserController:Post:CreateUser: User is null ");
+            log.error(LoggerColor.ERROR + "UserController:Post:CreateUser: User is null ");
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -61,11 +61,12 @@ public class UserRestController {
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN') or @userServiceImpl.readById(#userId) == principal.getId()")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or @userServiceImpl.readById(#userId).id == principal.getId()")
     @DeleteMapping("{id}")
     public ResponseEntity<User> deleteUser(@PathVariable("id") Long userId) {
         if (userService.readById(userId) == null) {
-            log.error(LoggerColor.ERROR +"UserController:Delete:deleteUser:User ->Not Found with id " + userId);
+            log.error(LoggerColor.ERROR +"UserController:Delete:deleteUser:User ->Not Found with email "
+                    + userService.readById(userId).getEmail());
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         userService.delete(userId);
@@ -73,7 +74,7 @@ public class UserRestController {
         return new ResponseEntity<>(HttpStatus.I_AM_A_TEAPOT);
     }
 
-//    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/all")
     public ResponseEntity<List<User>> getAllUsers() {
         log.info(LoggerColor.SUCCESS + "UserController:GET:getAllUsers: Success at " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));

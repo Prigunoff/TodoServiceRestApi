@@ -4,13 +4,13 @@ import com.prigunoff.todolist.exceptions.NullEntityReferenceException;
 import com.prigunoff.todolist.model.User;
 import com.prigunoff.todolist.repository.UserRepository;
 import com.prigunoff.todolist.service.UserService;
+import com.prigunoff.todolist.utils.LoggerColor;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
 @Service("userServiceImpl")
 public class UserServiceImpl implements UserService {
     private UserRepository userRepository;

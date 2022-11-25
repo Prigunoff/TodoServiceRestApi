@@ -28,12 +28,13 @@ public class TaskRestController {
         this.stateService = stateService;
         this.toDoService = toDoService;
     }
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
 
     @GetMapping("")
     public ResponseEntity<List<Task>> getAll() {
         return new ResponseEntity<>(this.taskService.getAll(), HttpStatus.OK);
     }
-
+    @PreAuthorize("hasRole('ROLE_ADMIN') or @taskServiceImpl.readById(#taskId).todo.owner.id == principal.getId()")
     @GetMapping("{id}")
     public ResponseEntity<Task> getOneTask(@PathVariable("id") Long taskId) {
         if (taskId == null) {
@@ -59,8 +60,8 @@ public class TaskRestController {
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN') or @userServiceImpl.readById(@toDoServiceImpl.readById(@taskServiceImpl.readById(#id).id)) == principal.getId()")
-    @PutMapping("{id}")
-    public ResponseEntity<Task> update(@PathVariable String id, @RequestBody Map<String, String> editedMap) {
+    @PutMapping("{task_id}")
+    public ResponseEntity update(@PathVariable String task_id, @RequestBody Map<String, String> editedMap) {
         try {
             TaskDto taskDto = new TaskDto(Long.parseLong(editedMap.get("task_id")), editedMap.get("task"), editedMap.get("priority"), Long.parseLong(editedMap.get("todo_id")), Long.parseLong(editedMap.get("state_id")));
             Task task = TaskTransformer.convertToEntity(
@@ -68,7 +69,7 @@ public class TaskRestController {
                     toDoService.readById(taskDto.getTodoId()),
                     stateService.readById(taskDto.getStateId())
             );
-            Task oldTask = taskService.readById(Integer.valueOf(id));
+            Task oldTask = taskService.readById(Integer.valueOf(task_id));
             oldTask.setName(task.getName());
             oldTask.setState(task.getState());
             oldTask.setPriority(task.getPriority());

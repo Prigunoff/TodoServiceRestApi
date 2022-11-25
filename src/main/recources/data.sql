@@ -21,6 +21,7 @@ INSERT INTO todos (id, title, created_at, owner_id) VALUES (13, 'Nora''s To-Do #
 INSERT INTO tasks (id, name, priority, todo_id, state_id) VALUES (6, 'Task #2', 'LOW', 7, 5);
 INSERT INTO tasks (id, name, priority, todo_id, state_id) VALUES (5, 'Task #1', 'HIGH', 7, 8);
 INSERT INTO tasks (id, name, priority, todo_id, state_id) VALUES (7, 'Task #3', 'MEDIUM', 7, 6);
+INSERT INTO tasks (id, name, priority, todo_id, state_id) VALUES (8, 'Task #Nora', 'MEDIUM', 12, 6);
 
 INSERT INTO todo_collaborator (todo_id, collaborator_id) VALUES (7, 5);
 INSERT INTO todo_collaborator (todo_id, collaborator_id) VALUES (7, 6);

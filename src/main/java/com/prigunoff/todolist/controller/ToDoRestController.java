@@ -25,7 +25,7 @@ public class ToDoRestController {
         this.toDoService = toDoService;
         this.userService = userService;
     }
-
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
     @GetMapping("{id}")
     public ResponseEntity<ToDo> getToDo(@PathVariable("id") Long todoId) {
         if (todoId == null) {
@@ -40,15 +40,14 @@ public class ToDoRestController {
         return new ResponseEntity<>(toDoService.getAll(), HttpStatus.OK);
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN') or #userId == authentication.principal.getId()")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or #userId == principal.getId()")
     @GetMapping("{id}/all")
     public ResponseEntity<List<ToDo>> getAllTodosByUserId(@PathVariable("id") Long userId) {
         return new ResponseEntity<>(userService.readById(userId)
                 .getMyTodos(), HttpStatus.OK);
     }
 
-    //    @PreAuthorize("hasRole('ADMIN_ROLE')")
-    @PreAuthorize("hasRole('ROLE_ADMIN') or #userId == principal.getId()") // WORKS!!!!
+    @PreAuthorize("hasRole('ROLE_ADMIN') or #userId == principal.getId()")
     @PostMapping("{id}")
     public ResponseEntity<ToDo> createToDoForUser(@PathVariable("id") Long userId, @RequestBody ToDo todo) {
         todo.setOwner(userService.readById(userId));
