@@ -10,3 +10,12 @@ To run:
 -----
 3.Set up app.properties: spring.datasource.url=jdbc:postgresql://localhost:(yourPort)/(yourDbName)
 -----
+Go to Postman and login as Admin\User or create account(user)
+POST:localhost:8080/api/auth/login
+JSON:{
+"username" : mike@mail.com
+"password" : 1111
+}
+Admin: mike@mail.com \ 1111
+User: nick@mail.com \ 2222
+----
