@@ -6,6 +6,7 @@ import com.prigunoff.todolist.model.Task;
 import com.prigunoff.todolist.service.StateService;
 import com.prigunoff.todolist.service.TaskService;
 import com.prigunoff.todolist.service.ToDoService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
-
 @RestController
 @RequestMapping("/api/tasks/")
 public class TaskRestController {

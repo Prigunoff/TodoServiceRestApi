@@ -3,6 +3,8 @@ package com.prigunoff.todolist.controller;
 import com.prigunoff.todolist.model.ToDo;
 import com.prigunoff.todolist.service.ToDoService;
 import com.prigunoff.todolist.service.UserService;
+import com.prigunoff.todolist.utils.LoggerColor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-
+@Slf4j
 @RestController
 @RequestMapping("/api/todos/")
 public class ToDoRestController {
@@ -54,7 +56,7 @@ public class ToDoRestController {
         todo.setCreatedAt(LocalDateTime.now());
         todo.setCollaborators(new ArrayList<>());
         toDoService.create(todo);
-
+        log.info(LoggerColor.SUCCESS + "ToDoController:POST:Created ToDo with title " + todo.getTitle());
         return new ResponseEntity<>(todo, HttpStatus.OK);
     }
 
@@ -66,6 +68,7 @@ public class ToDoRestController {
         if (toDoService.readById(id) == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+        log.info(LoggerColor.SUCCESS + "ToDoController:DELETE:Deleting todo with title " + toDoService.readById(id).getTitle());
         toDoService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
@@ -82,6 +85,7 @@ public class ToDoRestController {
             todo.setCollaborators(todo.getCollaborators());
         }
         toDoService.update(todo);
+        log.info(LoggerColor.SUCCESS + "ToDoController:PUT:UpdateTodo: ToDo updated with id "  + toDoService.readById(todo.getId()));
         return new ResponseEntity<>(todo, HttpStatus.OK);
     }
 }
