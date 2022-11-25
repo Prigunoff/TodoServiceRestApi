@@ -3,7 +3,8 @@ This pet is just to secure my knowlage from cources.
 ToDo App to set todo's lists and tasks for users, also create users. Users can be registered and has their own roles.
 Build with Spring Security, Jwt,DB. 
 
-To run:
+### To run:
+
 1.Open the project in IntelliJIDEA Ultimate Edition.
 -----
 2.Install  postgresSQL.
